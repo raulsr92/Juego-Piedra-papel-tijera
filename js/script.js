@@ -28,9 +28,7 @@
             while (aleatorio > 3 || aleatorio ==0){
                 aleatorio = Math.floor((Math.random()*10));;
             }
-
             pc =aleatorio;
-
             switch (pc) {
                 case 1:
                     pcTexto = "piedra";
@@ -44,7 +42,6 @@
                     pcTexto = "tijera";
                     break;  
             }
-
             return pc; 
         }
 
@@ -72,32 +69,40 @@
 
         // Paso 4: Evaluar y Seleccionar al ganador
 
+        function sumarTriunfos(resultado){
+            if (resultado==1) {
+                triunfosJugador = triunfosJugador+1;
+            } else if(resultado==0){
+                triunfosPc = triunfosPc+1;
+            } 
+        }
+
         function asignarResultado(eleccionJugador, eleccionPc) {
             if (eleccionJugador==eleccionPc) {
                 resultado = 2
             }else if(eleccionJugador==1 && eleccionPc==2){
                     resultado = 0
-                    triunfosPc = triunfosPc+1;
+                    sumarTriunfos(resultado);
 
             }else if(eleccionJugador==1 && eleccionPc==3){
                     resultado = 1
-                    triunfosJugador = triunfosJugador+1;
+                    sumarTriunfos(resultado);
 
             }else if (eleccionJugador==2 && eleccionPc==1){
                     resultado = 1
-                    triunfosJugador = triunfosJugador+1;
+                    sumarTriunfos(resultado);
 
             }else if (eleccionJugador==2 && eleccionPc==3){
                     resultado = 0
-                    triunfosPc = triunfosPc+1;
+                    sumarTriunfos(resultado);
 
             }else if (eleccionJugador==3 && eleccionPc==1){
                     resultado = 0
-                    triunfosPc = triunfosPc+1;
+                    sumarTriunfos(resultado);
 
             }else if (eleccionJugador==3 && eleccionPc==2){
                     resultado = 1
-                    triunfosJugador = triunfosJugador+1;
+                    sumarTriunfos(resultado);
             }
             return resultado;
         }
@@ -127,7 +132,6 @@
             alert(evaluarGanador(resultado))
             alert("Puntaje jugador: " + triunfosJugador);
             alert("Puntaje pc: " + triunfosPc);
-
         }
 
 
