@@ -2,11 +2,24 @@
 
         // Paso 1: Declarar variables
 
-        let jugador = 0;
+        let jugador;
         let jugadorTexto;
         let pc;
         let pcTexto;
         let resultado;
+        let triunfosPc=0;
+        let triunfosJugador=0;
+
+        // Paso 7.1: Capturar elementos HTML donde se mostrarán los resultados
+
+        let parrafoPC = document.querySelector(".option--pc");
+        console.log(parrafoPC);
+        let parrafoJugador = document.querySelector(".option--jugador");
+        let parrafoResultado = document.querySelector(".option--resultado");
+        let parrafoVeredicto = document.querySelector(".option--veredicto");
+        let parrafoPuntajeJugador = document.querySelector(".puntaje--jugador");
+        let parrafoPuntajePc = document.querySelector(".puntaje--pc");
+
 
         // Paso 2: Obtener valor de la pc
         
@@ -38,7 +51,7 @@
         // Paso 3: Obtener valor del usuario
 
         function asignarValorJugador() {
-            jugadorTexto = prompt("Escriba piedra, papel o tijera");
+            jugadorTexto = prompt("Elija una opción: piedra, papel o tijera");
             switch (jugadorTexto) {
                 case "piedra":
                     jugador = 1;
@@ -52,37 +65,71 @@
                 case "tijera":
                     jugador = 3;
                     break;  
+                default: alert("La opcion elejida no es correcta")    
             }
             return jugador; 
         }
 
         // Paso 4: Evaluar y Seleccionar al ganador
 
-        function evaluarGanador(eleccionJugador, eleccionPc) {
+        function asignarResultado(eleccionJugador, eleccionPc) {
             if (eleccionJugador==eleccionPc) {
-                resultado = "Ambos eligieron la misma opción, es un empate"
+                resultado = 2
             }else if(eleccionJugador==1 && eleccionPc==2){
-                    resultado = `¡Gana la PC!, porque el papel envuelve a la piedra`
-            }else if(eleccionJugador==1 && eleccionPc==3){
-                    resultado = `¡Usted gana!, porque la piedra tritura la tijera`
-            }else if (eleccionJugador==2 && eleccionPc==1){
-                    resultado = `¡Usted gana!, porque el papel envuelve a la piedra`
-            }else if (eleccionJugador==2 && eleccionPc==3){
-                    resultado = `¡Gana la PC!, porque la tijera corta el papel`
-            }else if (eleccionJugador==3 && eleccionPc==1){
-                    resultado = `¡Gana la PC!, porque la piedra tritura la tijera`
-            }else if (eleccionJugador==3 && eleccionPc==2){
-                    resultado = `¡Usted gana!, porque la tijera corta el papel`
-            }
+                    resultado = 0
+                    triunfosPc = triunfosPc+1;
 
+            }else if(eleccionJugador==1 && eleccionPc==3){
+                    resultado = 1
+                    triunfosJugador = triunfosJugador+1;
+
+            }else if (eleccionJugador==2 && eleccionPc==1){
+                    resultado = 1
+                    triunfosJugador = triunfosJugador+1;
+
+            }else if (eleccionJugador==2 && eleccionPc==3){
+                    resultado = 0
+                    triunfosPc = triunfosPc+1;
+
+            }else if (eleccionJugador==3 && eleccionPc==1){
+                    resultado = 0
+                    triunfosPc = triunfosPc+1;
+
+            }else if (eleccionJugador==3 && eleccionPc==2){
+                    resultado = 1
+                    triunfosJugador = triunfosJugador+1;
+            }
             return resultado;
         }
 
+        function evaluarGanador(result){
+            if (result==1) {
+                return "Usted Gana"
+            } else if(result==0){
+                return "La PC Gana"
+            } else{
+                return "Es un empate"
+            }
+        }
+
+        
         // Paso 5: Invocar funciones
 
-        asignarValorPc();
-        asignarValorJugador();
-        evaluarGanador(jugador,pc);
+
+        while (triunfosJugador<3 && triunfosPc<3) {
+            asignarValorPc()
+            asignarValorJugador()
+
+            alert("PC eligió: "+ pcTexto)
+            alert("Usted eligió: "+ jugadorTexto)
+
+            asignarResultado(jugador,pc)
+            alert(evaluarGanador(resultado))
+            alert("Puntaje jugador: " + triunfosJugador);
+            alert("Puntaje pc: " + triunfosPc);
+
+        }
+
 
         //Paso 6: Test
 
@@ -91,16 +138,20 @@
         console.log(jugador);
         console.log(jugadorTexto);
 
-        // Paso7: Mostrar resultados
 
-        // Paso 7.1: Capturar elementos HTML donde se mostrarán los resultados
+        //Paso 7: Impresión:
 
-        let parrafoPC = document.querySelector(".option--pc");
-        let parrafoJugador = document.querySelector(".option--jugador");
-        let parrafoResultado = document.querySelector(".option--resultado");
-
-        // Paso 7.2: Establecer el contenido de los elementos HTML desde JS
 
         parrafoPC.innerHTML = `<strong>La PC eligió:</strong> ${pcTexto}`;
         parrafoJugador.innerHTML = `<strong>Usted eligió:</strong> ${jugadorTexto}`;
-        parrafoResultado.innerHTML = `<strong>Resultado de la partida:</strong> ${resultado}`
+        parrafoResultado.innerHTML = `<strong>Resultado de la partida: </strong> ${evaluarGanador(resultado)}`
+        parrafoPuntajeJugador.innerHTML = `<strong>Puntaje Jugador:</strong> ${triunfosJugador}`;
+        parrafoPuntajePc.innerHTML= `<strong>Puntaje PC:</strong> ${triunfosPc}`;
+
+        if(triunfosPc==3){
+            parrafoVeredicto.innerHTML = `<strong> La PC ha ganado 3 veces seguidas, ¡Ha perdido!</strong>`
+        } else if(triunfosJugador ==3){
+            parrafoVeredicto.innerHTML = `<strong> Usted ha ganado 3 veces seguidas, ¡es el vencedor!</strong>`
+        }    
+
+        alert("Terminó el juego!")    
